@@ -39,6 +39,9 @@ First create a connection to the database file and ask for the names of the tabl
 
 ```{r}
 
+# connecting to the database
+con <- DBI::dbConnect(RSQLite::SQLite(), "levant.cameo.sqlite3")
+
 ```
 
 ## Wrapping things up
@@ -48,6 +51,14 @@ There are three tables of interest (you don't care about anything beginning
 appear as if they were data.frames
 
 ```{r}
+# wrapping the tables
+DBI::dbListTables(con)
+
+events <- dplyr::tbl(con, "event")
+scores <- dplyr::tbl(con, "score")
+descriptions <- dplyr::tbl(con, "description")
+
+events
 
 ```
 
@@ -57,6 +68,8 @@ To get conflict scores for events in this period, join the score table to the
 events table with a left join. Hint: think about which table should be left and why.
 
 ```{r}
+
+conflict_scores <- left_ji
 
 ```
 

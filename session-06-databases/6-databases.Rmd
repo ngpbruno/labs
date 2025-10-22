@@ -99,7 +99,7 @@ For the simple examples that we will see here, we'll need some data sets that co
 
 ```{r, echo = F}
 library(nycflights13)
-# flights 
+#flights 
 # planes
 # airlines
 ```
@@ -171,6 +171,18 @@ b) Which airline has the most flights with unregistered planes?
 
 ```{r}
 
+flights 
+planes
+airlines
+
+# question a
+anti_join(flights, planes, by = "tailnum") %>% nrow()
+
+# question b 
+flights %>%
+  dplyr::anti_join(planes, by = "tailnum") %>%
+  dplyr::count(carrier, sort = TRUE) %>%
+  dplyr::left_join(airlines, by = "carrier")
 ```
 
 
@@ -409,6 +421,18 @@ b) Add the `airports` table to the database with the appropriate index.
 
 ```{r}
 
+# question a
+head(nycflights13::airports)
+
+# question b
+dplyr::copy_to(
+  dest = con, 
+  df = nycflights13::airports, 
+  name = "airports", # create the "airports" table
+  temporary = FALSE, 
+  indexes = "faa" 
+)
+
 ```
 
 
@@ -523,7 +547,18 @@ b) Collect the results into a local dataframe.
 :::
 
 ```{r}
+# question a:
 
+jan1_flights<- dplyr::left_join(
+  dplyr::tbl(con, 'flights'),
+  dplyr::tbl(con, 'airlines'),
+  by = "carrier"
+) |>
+  dplyr::filter(month == 1, day == 1) |>
+  dplyr::select(carrier, name, flight) 
+
+# question b:
+jan1_flights_local <- jan1_flights |> dplyr::collect()
 ```
 
 

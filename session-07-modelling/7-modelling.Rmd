@@ -332,6 +332,14 @@ Look at the `multiv_model_out` object that you have just created. Try to get a s
 
 ```{r, echo= FALSE}
 # your code here
+
+options(scipen = 999)
+
+summary(multiv_model_out[[6]])
+
+summary(multiv_model_out[[15]])
+
+summary(multiv_model_out[[31]])
 ```
 :::
 
@@ -609,7 +617,24 @@ Our implementation of `modelsummary` above is good, but it can be improved furth
 
 
 ```{r, echo= FALSE}
+mod_table <- modelsummary::modelsummary(multiv_model_out[29:31], 
+                                        output = "kableExtra",
+                                        fmt = fmt_significant(2),  # changing here  
+                                        estimate  = "{estimate}",
+                                        statistic = "conf.int",
+                                        coef_omit = "Intercept",
+                                        coef_rename=c("gdp"="Gdp", 
+                                                      "bmi"="Avg. BMI", 
+                                                      "alcohol" = "Alcohol Consum.",
+                                                      "hiv_aids"= "HIV cases", 
+                                                      "percentage_expenditure" = "Health Expenditure (% of GDP)",
+                                                      "life_expectancy" = "Life Expectancy"),
+                                        gof_omit = 'DF|Deviance|Log.Lik|AIC|BIC',
+                                        title = 'An Improved Regression Table',
+                                        notes = 'Data originated at the WHO.',
+                                        escape = FALSE)
 
+mod_table
 ```  
 :::
 ---
