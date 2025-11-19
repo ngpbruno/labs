@@ -207,6 +207,11 @@ ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
 
 ```{r}
 # YOUR CODE HERE
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, colour = species)) +
+  geom_point() + 
+  labs(title = "Basic plot", x = 'flipper length', y = 'body mass') +
+  theme_minimal()
 ```
 
 
@@ -255,6 +260,10 @@ What would happen if we specified 5 bins? Try it out.
 
 ```{r}
 # YOUR CODE HERE
+max(df$lifeExp) - min(df$lifeExp) # the range is approx 60 years
+
+ggplot(df, aes(x = lifeExp)) +
+  geom_histogram(bins = 5)
 ```
 
 
@@ -331,13 +340,28 @@ Create a histogram showing the distribution of penguin body mass using the `peng
 
 ```{r}
 # YOUR CODE HERE
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_histogram(bins = 25, fill = 'red') +
+  theme_minimal()
 
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_density(fill = 'blue', alpha = 0.5) +
+  theme_minimal()
+
+ggplot(penguins, aes(x = body_mass_g)) +
+  geom_bar(fill = 'green') +
+  theme_minimal()
 ```
 
 1. Now, look for a variable in the dataset that can be used to meaningfully group body mass. Use that variable to create a box plot or violin plot of body mass.
 
 ```{r}
 # YOUR CODE HERE
+ggplot(penguins, aes(x = species, y = body_mass_g)) +
+  geom_boxplot(fill = 'lightblue') +
+  geom_jitter(alpha = 0.2, color = "blue") +
+  theme_minimal()
+
 ```
 
 
@@ -671,6 +695,10 @@ Create a scatter plot to explore the relationship between `flipper_length_mm` an
 
 ```{r}
 # YOUR CODE HERE
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm") +
+  theme_minimal()
 ```
 
 ---
@@ -965,7 +993,17 @@ Create a plot to compare the GDP per capita development of the BRICS countries (
 
 ```{r}
 # YOUR CODE HERE
+brics <- (df %>% 
+            filter(country %in% c("Brazil", "India", "China", "South Africa")))
 
+ggplot(brics, aes(x = year, y = gdpPercap)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "GDP per capita development of BRICS countries",
+       x = "Year",
+       y = "GDP per capita") +
+  facet_wrap(~ country, nrow = 1) +
+  scale_x_continuous(breaks = seq(1950, 2010, by = 10))
 ```
 
 ---
